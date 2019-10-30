@@ -1,0 +1,76 @@
+# Copyright 2019 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The jq binary.
+cc_binary(
+    name = "jq",
+    srcs = [
+        ":source_files",
+    ],
+    copts = [
+        "-Iexternal/oniguruma/src",
+        "-Wno-cpp",
+        "-Wno-unused-function",
+        "-Wno-unused-variable",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@oniguruma",
+    ],
+)
+
+# Generate the source files.
+# This will run ./configure and extract a host-dependent confdefs.h file, then
+# prefix each .h acd .c file with '#include "confdefs.h"'.
+genrule(
+    name = "source_files",
+    srcs = glob(["**"]),
+    outs = ["build/" + f for f in glob(
+        [
+            "src/*.h",
+            "src/*.c",
+        ],
+        exclude = [
+            "src/inject_errors.c",
+        ],
+    )] + [
+        # The extracted confdefs.h.
+        "build/src/confdefs.h",
+        # The generated builtin.inc.
+        "build/src/builtin.inc",
+    ],
+    cmd =
+        # Run ./configure && make src/builtin.inc.
+        "( " +
+        "  cd external/jq; " +
+        "  ./configure > /dev/null 2> /dev/null; " +
+        "  make src/builtin.inc > /dev/null; " +
+        "); " +
+        # Extract confdefs.h from config.log.
+        "grep '^/\\* confdefs.h \\*/$$' external/jq/config.log -A1000 " +
+        "  | head -n -1 > \"$(@D)\"/build/src/confdefs.h; " +
+        # Prefix each output file with an include of confdefs.h.
+        "OUTS=\"$(OUTS)\"; for FILE in $$OUTS; do " +
+        "  touch \"$$FILE\"; " +
+        "  BASENAME=\"$$(basename $$FILE)\"; " +
+        "  if [ \"$$BASENAME\" != \"confdefs.h\" ]; then " +
+        "    echo '#include \"confdefs.h\"' > \"$$FILE\"; " +
+        "  cat external/jq/src/\"$$BASENAME\" >> \"$$FILE\"; " +
+        "  fi; " +
+        # Replace non-relative references.
+        "  sed -e 's|^#include \"src/|#include \"|g' -i \"$$FILE\"; " +
+        "done; " +
+        # Copy builtin.inc and version.h without bodificaitons.
+        "cp external/jq/src/builtin.inc \"$(@D)\"/build/src/builtin.inc; ",
+)

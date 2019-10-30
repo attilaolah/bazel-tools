@@ -1,0 +1,437 @@
+# Copyright 2019 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The Oniguruma library.
+cc_library(
+    name = "oniguruma",
+    hdrs = [
+        "src/oniguruma.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":ascii",
+        ":big5",
+        ":cp1251",
+        ":euc_jp",
+        ":euc_kr",
+        ":euc_tw",
+        ":gb18030",
+        ":iso8859",
+        ":koi8",
+        ":onig_init",
+        ":regcomp",
+        ":regenc",
+        ":regerror",
+        ":regexec",
+        ":regext",
+        ":reggnu",
+        ":regparse",
+        ":regposix",
+        ":regsyntax",
+        ":regtrav",
+        ":regversion",
+        ":sjis",
+        ":st",
+        ":unicode",
+        ":utf16",
+        ":utf32",
+        ":utf8",
+    ],
+)
+
+# The mktable binary.
+cc_binary(
+    name = "mktable",
+    srcs = [
+        "src/mktable.c",
+    ],
+    deps = [
+        ":oniguruma",
+    ],
+)
+
+# Other libraries linked in with :oniguruma.
+cc_library(
+    name = "ascii",
+    srcs = [
+        "src/ascii.c",
+    ],
+    deps = [
+        ":regenc",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "big5",
+    srcs = [
+        "src/big5.c",
+    ],
+    deps = [
+        ":regenc",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "cp1251",
+    srcs = [
+        "src/cp1251.c",
+    ],
+    deps = [
+        ":regenc",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "euc_jp",
+    srcs = [
+        "src/euc_jp.c",
+        "src/euc_jp_prop.c",
+    ],
+    deps = [
+        ":regenc",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "euc_kr",
+    srcs = [
+        "src/euc_kr.c",
+    ],
+    deps = [
+        ":regenc",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "euc_tw",
+    srcs = [
+        "src/euc_tw.c",
+    ],
+    deps = [
+        ":regenc",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "gb18030",
+    srcs = [
+        "src/gb18030.c",
+    ],
+    deps = [
+        ":regenc",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "iso8859",
+    srcs = [
+        "src/iso8859_1.c",
+        "src/iso8859_10.c",
+        "src/iso8859_11.c",
+        "src/iso8859_13.c",
+        "src/iso8859_14.c",
+        "src/iso8859_15.c",
+        "src/iso8859_16.c",
+        "src/iso8859_2.c",
+        "src/iso8859_3.c",
+        "src/iso8859_4.c",
+        "src/iso8859_5.c",
+        "src/iso8859_6.c",
+        "src/iso8859_7.c",
+        "src/iso8859_8.c",
+        "src/iso8859_9.c",
+    ],
+    deps = [
+        ":regenc",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "koi8",
+    srcs = [
+        "src/koi8.c",
+        "src/koi8_r.c",
+    ],
+    deps = [
+        ":regenc",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "onig_init",
+    srcs = [
+        "src/onig_init.c",
+    ],
+    deps = [
+        ":regenc",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "regcomp",
+    srcs = [
+        "src/regcomp.c",
+    ],
+    deps = [
+        ":regparse",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "regenc",
+    srcs = [
+        "src/regenc.c",
+    ],
+    hdrs = [
+        "src/oniguruma.h",
+        "src/regenc.h",
+        "src/regint.h",
+    ],
+    deps = [
+        ":config",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "regerror",
+    srcs = [
+        "src/regerror.c",
+    ],
+    deps = [
+        ":regenc",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "regexec",
+    srcs = [
+        "src/regexec.c",
+    ],
+    deps = [
+        ":regenc",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "regext",
+    srcs = [
+        "src/regext.c",
+    ],
+    deps = [
+        ":regenc",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "reggnu",
+    srcs = [
+        "src/reggnu.c",
+    ],
+    hdrs = [
+        "src/oniggnu.h",
+    ],
+    deps = [
+        ":regenc",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "regparse",
+    srcs = [
+        "src/regparse.c",
+    ],
+    hdrs = [
+        "src/regparse.h",
+    ],
+    deps = [
+        ":st",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "regposix",
+    srcs = [
+        "src/regposerr.c",
+        "src/regposix.c",
+    ],
+    hdrs = [
+        "src/onigposix.h",
+    ],
+    deps = [
+        ":config",
+        ":regenc",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "regsyntax",
+    srcs = [
+        "src/regsyntax.c",
+    ],
+    deps = [
+        ":regenc",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "regtrav",
+    srcs = [
+        "src/regtrav.c",
+    ],
+    deps = [
+        ":regenc",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "regversion",
+    srcs = [
+        "src/regversion.c",
+    ],
+    deps = [
+        ":regenc",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "sjis",
+    srcs = [
+        "src/sjis.c",
+        "src/sjis_prop.c",
+    ],
+    deps = [
+        ":regenc",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "st",
+    srcs = [
+        "src/st.c",
+    ],
+    hdrs = [
+        "src/st.h",
+    ],
+    deps = [
+        ":regenc",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "unicode",
+    srcs = [
+        "src/unicode.c",
+        "src/unicode_fold1_key.c",
+        "src/unicode_fold2_key.c",
+        "src/unicode_fold3_key.c",
+        "src/unicode_unfold_key.c",
+    ],
+    deps = [
+        ":config",
+        ":data",
+        ":regenc",
+        ":st",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "utf8",
+    srcs = [
+        "src/utf8.c",
+    ],
+    deps = [
+        ":regenc",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "utf16",
+    srcs = [
+        "src/utf16_be.c",
+        "src/utf16_le.c",
+    ],
+    deps = [
+        ":regenc",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "utf32",
+    srcs = [
+        "src/utf32_be.c",
+        "src/utf32_le.c",
+    ],
+    deps = [
+        ":regenc",
+    ],
+    alwayslink = 1,
+)
+
+# Generated data files.
+cc_library(
+    name = "data",
+    hdrs = [
+        "src/unicode_egcb_data.c",
+        "src/unicode_fold_data.c",
+        "src/unicode_property_data.c",
+        "src/unicode_property_data_posix.c",
+        "src/unicode_wb_data.c",
+    ],
+)
+
+# CC library containing config.h.
+cc_library(
+    name = "config",
+    hdrs = [
+        ":config_h",
+    ],
+)
+
+genrule(
+    name = "config_h",
+    srcs = glob(["**"]),
+    outs = ["config.h"],
+    cmd =
+        "( " +
+        "  cd external/oniguruma; " +
+        "  ./configure > /dev/null; " +
+        "); " +
+        "cp external/oniguruma/src/config.h \"$@\"; ",
+)
