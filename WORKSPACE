@@ -16,7 +16,7 @@
 # See https://docs.bazel.build/versions/master/build-ref.html#workspace.
 workspace(
     # How this workspace would be referenced with absolute labels from another workspace
-    name = "bzl",
+    name = "tools",
 )
 
 load("//:package.bzl", "register_repositories")
