@@ -197,6 +197,9 @@ cc_library(
         ":regparse",
     ],
     alwayslink = 1,
+    copts = [
+        "-Wno-maybe-uninitialized",
+    ],
 )
 
 cc_library(
