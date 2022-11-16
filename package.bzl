@@ -18,12 +18,12 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 # This is here to make it easier to update this file.
 VERSIONS = {
     "bazelbuild/bazel-skylib": "1.0.2",
-    "kkos/oniguruma": "6.9.5",
+    "kkos/oniguruma": "6.9.8",
     "stedolan/jq": "1.6",
 }
 SHA256_SUMS = {
     "bazelbuild/bazel-skylib": "e5d90f0ec952883d56747b7604e2a15ee36e288bb556c3d0ed33e818a4d971f2",
-    "kkos/oniguruma": "d33c849d1672af227944878cefe0a8fcf26fc62bedba32aa517f2f63c314a99e",
+    "kkos/oniguruma": "28cd62c1464623c7910565fb1ccaaa0104b2fe8b12bcd646e81f73b47535213e",
     "stedolan/jq": "5de8c8e29aaa3fb9cc6b47bb27299f271354ebb72514e3accadc7d38b5bbaa72",
 }
 
@@ -48,7 +48,7 @@ def register_repositories():
     _github_archive(
         name = "oniguruma",
         repo = "kkos/oniguruma",
-        url = "releases/download/v{version}_rev1/onig-{version}.tar.gz",
+        url = "releases/download/v{version}/onig-{version}.tar.gz",
         strip_prefix = "onig-{version}",
         vendor_build_file = True,
     )
